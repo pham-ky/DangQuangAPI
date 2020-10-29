@@ -61,7 +61,7 @@ namespace DangQuangAPI.Controllers
                 response.TotalItems = _context.Product.Count();
 
                 prod = _context.Product.Skip(_skip).Take(pageSize).ToList();
-
+                //hello
                 response.Data = prod;
                 response.Page = page;
                 response.PageSize = pageSize;
