@@ -38,7 +38,7 @@ namespace DangQuangAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]User user)
         {
-            var us = user = await _context.User.FirstOrDefaultAsync(u => u.UserName == user.UserName && u.UserPassword == user.UserPassword);
+            var us = user = await _context.User.FirstOrDefaultAsync(u => u.UserName == user.UserName && u.UserPassword == user.UserPassword && u.UserStatus == 0);
             return Ok(us);
         }
 

@@ -36,35 +36,58 @@ namespace DangQuangAPI.Controllers
 
         // POST api/<OrdersController>
         [HttpPost]
-        public async Task<int> Add(Order orders)
+        //public async Task<IActionResult> AddOrder([FromBody] Order oders)
+        //{
+        //    var res = await Add(oders);
+        //    if (res == 0)
+        //        return BadRequest();
+        //    return Ok(res);
+        //}
+        public async Task<int> Add(OrderModel orders)
         {
+            var ID = Guid.NewGuid();
             Order order = new Order()
             {
-                OrderId = Guid.NewGuid(),
-                OrderUserId = Guid.NewGuid(),
+                OrderId = ID,
+                OrderUserId = orders.OrderUserId,
                 OrderNameOfConsignee = orders.OrderNameOfConsignee,
                 OrderAddress = orders.OrderAddress,
                 OrderPhone = orders.OrderPhone,
-                OrderNote = orders.OrderNote,
+                OrderNote = (orders.OrderNote!=null)? orders.OrderNote:"",
                 OrderTotalPrice = orders.OrderTotalPrice,
                 OrderStatus = 1,
-                OrderCreatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"))
+                OrderCreatedAt = DateTime.Now
             };
             _context.Order.Add(order);
-            var res = await _context.SaveChangesAsync();
-            //var ods = JsonConvert.DeserializeObject<List<OrderDetail>>(orders.orderDetails);
-            //foreach (var p in ods)
-            //{
-            //    OrderDetail od = new OrderDetail()
-            //    {
-            //        OrderDetailProductId = p.productId,
-            //        OrderId = order.Id,
-            //        Price = p.Price,
-            //        Quantity = p.Quantity
-            //    };
-            //    _daxoneDBContext.OrderDetails.Add(od);
-            //    await _daxoneDBContext.SaveChangesAsync();
-            //}
+            int res;
+            try
+            {
+                 res= await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            var ods = JsonConvert.DeserializeObject<List<OrderdetailModel>>(orders.OrderDetails);
+            foreach (var p in ods)
+            {
+                OrderDetail od = new OrderDetail()
+                {
+                    OrderDetailOrderId = order.OrderId,
+                    OrderDetailProductId = p.productId,
+                    OrderDetailPrice = p.productPrice,
+                    OrderDetailQuantity = p.quantity
+                };
+                try
+                {
+                    _context.OrderDetail.Add(od);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
             return res;
         }
 

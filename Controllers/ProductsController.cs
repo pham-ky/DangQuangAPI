@@ -16,7 +16,6 @@ namespace DangQuangAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly glasseyeContext _context;
-
         public ProductsController(glasseyeContext context)
         {
             _context = context;
@@ -48,7 +47,7 @@ namespace DangQuangAPI.Controllers
         public ResponseModel GetProducts([FromBody] Dictionary<string, object> formData)
         {
             var response = new ResponseModel();
-
+            var textkey = formData["textkey"].ToString()!=""? formData["textkey"].ToString():"";
             var page = int.Parse(formData["page"].ToString());
             var pageSize = int.Parse(formData["pageSize"].ToString());
             var result = formData["item_group_id"].ToString();
@@ -58,16 +57,16 @@ namespace DangQuangAPI.Controllers
                 //prod = _context.Product.ToList();
                 
                 int _skip = (page - 1) * pageSize;
-                response.TotalItems = _context.Product.Count();
+                response.TotalItems = _context.Product.Where(x => x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", ""))).Count();
 
-                prod = _context.Product.Skip(_skip).Take(pageSize).ToList();
-                //hello
+                prod = _context.Product.Where(x => x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", ""))).Skip(_skip).Take(pageSize).ToList();
+
                 response.Data = prod;
                 response.Page = page;
                 response.PageSize = pageSize;
                 return response;
             }
-            if (_context.Product.Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result)).Count() > 0)
+            if (_context.Product.Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result) && x.ProductName.Replace(" ","").Contains(textkey.Replace(" ", ""))).Count() > 0 )
             {
                 //prod = _context.Product
                 //    .Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result))
@@ -75,10 +74,10 @@ namespace DangQuangAPI.Controllers
 
                 int _skip = (page - 1) * pageSize;
                 response.TotalItems = _context.Product
-                    .Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result)).Count();
+                    .Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result) && x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", ""))).Count();
 
                 prod = _context.Product
-                    .Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result))
+                    .Where(x => x.ProductProductCategoryId.Value == Guid.Parse(result) && x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", "")))
                     .Skip(_skip).Take(pageSize).ToList();
 
                 response.Data = prod;
@@ -86,7 +85,7 @@ namespace DangQuangAPI.Controllers
                 response.PageSize = pageSize;
                 return response;
             }
-            if (_context.Product.Where(x => x.ProductSupplierId.Value == Guid.Parse(result)).Count() > 0)
+            if (_context.Product.Where(x => x.ProductSupplierId.Value == Guid.Parse(result) && x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", ""))).Count() > 0)
             {
                 //prod = _context.Product
                 //    .Where(x => x.ProductSupplierId.Value == Guid.Parse(result))
@@ -94,10 +93,10 @@ namespace DangQuangAPI.Controllers
                 
                 int _skip = (page - 1) * pageSize;
                 response.TotalItems = _context.Product
-                    .Where(x => x.ProductSupplierId.Value == Guid.Parse(result)).Count();
+                    .Where(x => x.ProductSupplierId.Value == Guid.Parse(result) && x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", ""))).Count();
 
                 prod = _context.Product
-                    .Where(x => x.ProductSupplierId.Value == Guid.Parse(result))
+                    .Where(x => x.ProductSupplierId.Value == Guid.Parse(result) && x.ProductName.Replace(" ", "").Contains(textkey.Replace(" ", "")))
                     .Skip(_skip).Take(pageSize).ToList();
 
                 response.Data = prod;

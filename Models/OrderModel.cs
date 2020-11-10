@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DangQuangAPI.Models
 {
-    public partial class Order
+    public class OrderModel
     {
         public Guid OrderId { get; set; }
         public Guid OrderUserId { get; set; }
@@ -15,8 +17,6 @@ namespace DangQuangAPI.Models
         public int? OrderStatus { get; set; }
         public DateTime? OrderCreatedAt { get; set; }
         public DateTime? OrderUpdatedAt { get; set; }
-        
-
-        public virtual User OrderUser { get; set; }
+        public string OrderDetails { get; set; }
     }
 }

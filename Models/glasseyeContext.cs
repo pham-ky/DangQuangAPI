@@ -176,7 +176,7 @@ namespace DangQuangAPI.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.OrderDetailOrderId, e.OrderDetailProductId });
 
                 entity.ToTable("order_detail");
 
