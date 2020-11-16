@@ -11,9 +11,9 @@ namespace DangQuangAPI.Models
         public string OrderAddress { get; set; }
         public string OrderPhone { get; set; }
         public string OrderNote { get; set; }
-        public long? OrderTotalPrice { get; set; }
-        public int? OrderStatus { get; set; }
-        public DateTime? OrderCreatedAt { get; set; }
+        public long OrderTotalPrice { get; set; }
+        public int OrderStatus { get; set; }
+        public DateTime OrderCreatedAt { get; set; }
         public DateTime? OrderUpdatedAt { get; set; }
         
 

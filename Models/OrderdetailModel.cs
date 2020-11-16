@@ -8,7 +8,7 @@ namespace DangQuangAPI.Models
     public class OrderdetailModel
     {
         public Guid productId { get; set; }
-        public int? quantity { get; set; }
-        public long? productPrice { get; set; }
+        public int quantity { get; set; }
+        public long productPrice { get; set; }
     }
 }
