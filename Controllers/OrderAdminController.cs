@@ -30,15 +30,15 @@ namespace DangQuangAPI.Controllers
             double totalMoney = 0;
             double totalMoney2 = 0;
 
-            double quantityOdr = _context.Order.Where(x => x.OrderCreatedAt.Month == DateTime.Now.AddMonths(+10).Month 
+            double quantityOdr = _context.Order.Where(x => x.OrderCreatedAt.Month == DateTime.Now.AddMonths(+11).Month 
                                                         && x.OrderStatus == 4).Count();
-            double quantityOdr2 = _context.Order.Where(x => x.OrderCreatedAt.Month == DateTime.Now.AddMonths(+9).Month
+            double quantityOdr2 = _context.Order.Where(x => x.OrderCreatedAt.Month == DateTime.Now.AddMonths(+10).Month
                                                         && x.OrderStatus == 4).Count();
 
             double percentOdr = Math.Round(((quantityOdr - quantityOdr2) / quantityOdr2) * 100, 2);
 
             var od = from r in _context.Order
-                     where r.OrderCreatedAt.Month == DateTime.Now.AddMonths(+10).Month && r.OrderStatus == 4
+                     where r.OrderCreatedAt.Month == DateTime.Now.AddMonths(+11).Month && r.OrderStatus == 4
                      join j in _context.OrderDetail on r.OrderId equals j.OrderDetailOrderId
                      select j;
 
@@ -49,7 +49,7 @@ namespace DangQuangAPI.Controllers
             }
 
             var od2 = from r in _context.Order
-                      where r.OrderCreatedAt.Month == DateTime.Now.AddMonths(+9).Month && r.OrderStatus == 4
+                      where r.OrderCreatedAt.Month == DateTime.Now.AddMonths(+10).Month && r.OrderStatus == 4
                       join j in _context.OrderDetail on r.OrderId equals j.OrderDetailOrderId
                       select j; ;
 
@@ -61,7 +61,7 @@ namespace DangQuangAPI.Controllers
 
             double percentQty = Math.Round(((totalQuantity - totalQuantity2) / totalQuantity2) * 100, 2);
             double percentMoney = Math.Round(((totalMoney - totalMoney2) / totalMoney2) * 100, 2);
-            for (int i = 7; i > 1; i--)
+            for (int i = 6; i > 0; i--)
             {
                 long S = 0;
                 var previousDate = DateTime.Now.AddMonths(-i);
